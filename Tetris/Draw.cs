@@ -17,41 +17,18 @@ namespace Tetris
             int topEdge = 0;
             int rightEdge = windowWidth - 1;
             int bottomEdge = windowHeight - 1;
+            int moveX = 0;
 
 
             while (true)
             {
-
-                var tetrominoToDraw = Move.Tetromino(tetromino);
-
-                if (tetrominoToScrape.Count > 0)
-                {
-                    foreach (var block in tetrominoToScrape)
-                    {
-                        int xPrevious = block.Item1;
-                        int yPrevious = block.Item2;
-                        canvas[xPrevious, yPrevious] = null;
-                    }
-                    tetrominoToScrape.Clear();
-                }
-
-
-                foreach (var block in tetrominoToDraw)
-                {
-                    string tetrominoType = block.Item1;
-                    int x = block.Item2;
-                    int y = block.Item3;
-
-                    tetrominoToScrape.Add(new Tuple<int, int>(x, y));
-                    canvas[x, y] = tetrominoType;
-                }
-
+                var tetrominoToDraw = Move.Tetromino(tetromino, leftEdge, rightEdge);
+                CommitTetrominoToCanvas(canvas, tetrominoToScrape, tetrominoToDraw);
 
                 for (int y = 0; y < canvas.GetLength(1); y++)
                 {
                     for (int x = 0; x < canvas.GetLength(0); x++)
                     {
-
                         SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
                         SetTetrominoColor(canvas, x, y);
 
@@ -64,7 +41,29 @@ namespace Tetris
             }
         }
 
+        private static void CommitTetrominoToCanvas(string[,] canvas, List<Tuple<int, int>> tetrominoToScrape, List<Tuple<string, int, int>> tetrominoToDraw)
+        {
+            if (tetrominoToScrape.Count > 0)
+            {
+                foreach (var block in tetrominoToScrape)
+                {
+                    int xPrevious = block.Item1;
+                    int yPrevious = block.Item2;
+                    canvas[xPrevious, yPrevious] = null;
+                }
+                tetrominoToScrape.Clear();
+            }
 
+            foreach (var block in tetrominoToDraw)
+            {
+                string tetrominoType = block.Item1;
+                int x = block.Item2;
+                int y = block.Item3;
+
+                tetrominoToScrape.Add(new Tuple<int, int>(x, y));
+                canvas[x, y] = tetrominoType;
+            }
+        }
 
         private static void SetBorder(int leftEdge, int topEdge, int rightEdge, int bottomEdge, int x, int y)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,15 +12,37 @@ namespace Tetris
 
         static List<Tuple<string, int, int>> coordinates = new List<Tuple<string, int, int>>();
         static List<Tuple<string, int, int>> coordinatesModified = new List<Tuple<string, int, int>>();
+        static int moveX = 0;
+        static int gravity = 0;
+        static Stopwatch time = Stopwatch.StartNew();
 
-        public static List<Tuple<string, int, int>> Tetromino(string[,] tetromino)
+        public static List<Tuple<string, int, int>> Tetromino(string[,] tetromino, int leftEdge, int RightEdge)
         {
             coordinates = GetTetrominoCoordinates(tetromino);
             coordinatesModified.Clear();
 
             int startXPosition = 12;
             int startYPosition = 1;
-            int gravity = Gravity(step: 1, speed: 1);
+            
+            if (time.ElapsedMilliseconds % 500 == 0)
+            {
+                int gravity = Gravity(step: 1, speed: 1);
+            }
+            
+
+            if (Console.KeyAvailable == true)
+            {
+                var keyboard = Console.ReadKey(true);
+                if (keyboard.Key == ConsoleKey.LeftArrow)
+                {
+                    moveX -= 1;
+                }
+
+                if (keyboard.Key == ConsoleKey.RightArrow)
+                {
+                    moveX += 1;
+                }
+            }
 
             foreach (var block in coordinates)
             {
@@ -28,8 +51,8 @@ namespace Tetris
                 var tetrominoY = block.Item3;
 
                 coordinatesModified.Add(new Tuple<string, int, int>(
-                    tetrominoType, 
-                    tetrominoX + startXPosition, 
+                    tetrominoType,
+                    tetrominoX + startXPosition + moveX,
                     tetrominoY + startYPosition + gravity
                     ));
             }
@@ -52,14 +75,14 @@ namespace Tetris
                 for (int y = 0; y < tetrominoYLength; y++)
                 {
                     string block = tetromino[x, y];
-                    
+
                     if (block != empty)
                         XY.Add(new Tuple<string, int, int>(block, x, y));
                 }
             }
             return XY;
         }
-        
+
 
         static int steps = 0;
         static int speeds = 0;
