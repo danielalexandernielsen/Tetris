@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+
 
 namespace Tetris
 {
@@ -9,7 +8,7 @@ namespace Tetris
     {
         static string[,] canvas = new string[0, 0];
 
-        public static void Game(int windowWidth, int windowHeight, int aspectRatio, string[,] tetromino)
+        public static void Game(int windowWidth, int windowHeight, int aspectRatio, List<Tuple<string, int, int>> tetromino)
         {
             if (canvas.GetLength(0) == 0)
                 canvas = new string[windowWidth, windowHeight];
@@ -37,8 +36,8 @@ namespace Tetris
                         SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
                         SetTetrominoColor(canvas, x, y);
 
-                        if (canvas[x, y] != "L")
-                            Console.Write(new string(' ', aspectRatio));
+                        if (canvas[x, y] != "  ")
+                            Console.Write("  ");
                     }
                     Console.WriteLine();
                 }

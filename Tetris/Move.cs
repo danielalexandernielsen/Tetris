@@ -10,11 +10,10 @@ namespace Tetris
     class Move
     {
 
-        static List<Tuple<string, int, int>> tetromineStructure = new List<Tuple<string, int, int>>();
         static List<Tuple<string, int, int>> movement = new List<Tuple<string, int, int>>();
         static int moveX = 0;
 
-        public static List<Tuple<string, int, int>> Tetromino(string[,] tetromino)
+        public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino)
         {
             int startXPosition = 12;
             int startYPosition = 1;
@@ -24,11 +23,10 @@ namespace Tetris
             int rightEdge = 22;
             int bottomEdge = 40;
 
-            tetromineStructure = GetTetrominoStructure(tetromino);
             movement.Clear();
             GravityOn(true);
 
-            foreach (var block in tetromineStructure)
+            foreach (var block in tetromino)
             {
                 var tetrominoType = block.Item1;
                 var tetrominoX = block.Item2 + startXPosition + moveX;
@@ -72,31 +70,7 @@ namespace Tetris
         }
 
 
-        static List<Tuple<string, int, int>> XY = new List<Tuple<string, int, int>>();
-
-        private static List<Tuple<string, int, int>> GetTetrominoStructure(string[,] tetromino)
-        {
-
-            int tetrominoXLength = tetromino.GetLength(0);
-            int tetrominoYLength = tetromino.GetLength(1);
-
-            string empty = " ";
-            for (int x = 0; x < tetrominoXLength; x++)
-            {
-                for (int y = 0; y < tetrominoYLength; y++)
-                {
-                    string block = tetromino[x, y];
-
-                    if (block != empty)
-                        XY.Add(new Tuple<string, int, int>(block, x, y));
-                }
-            }
-            return XY;
-        }
-
-
         static int gravity = 0;
-        static bool gravityStop = false;
         static int step = 0;
         static int speed = 0;
 
@@ -110,10 +84,9 @@ namespace Tetris
                 if (step % speed == 0)
                     gravity += 1;
             }
+
             else if (on == false)
-            {
                 gravity = 0;
-            }
         }
 
         static bool callNewTetromino = false;
