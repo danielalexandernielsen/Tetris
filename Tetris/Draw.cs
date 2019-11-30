@@ -8,12 +8,12 @@ namespace Tetris
     {
         static string[,] canvas = new string[0, 0];
 
-        public static void Game(int windowWidth, int windowHeight, int aspectRatio, List<Tuple<string, int, int>> tetromino)
+        public static void Game(int windowWidth, int windowHeight, string aspectRatio, List<Tuple<string, int, int>> tetromino)
         {
             if (canvas.GetLength(0) == 0)
                 canvas = new string[windowWidth, windowHeight];
 
-            Move.FinishedCallNewTetromino("New Tetromino");
+            Move.ResetMovement(true);
             Move.GravityOn(true);
             List<Tuple<int, int>> tetrominoScrapeTrail = new List<Tuple<int, int>>();
 
@@ -24,25 +24,29 @@ namespace Tetris
             int canvasWidth = canvas.GetLength(0);
             int canvasHeight = canvas.GetLength(1);
 
-            while (Move.FinishedCallNewTetromino("") == false)
+            while (Move.movementFinished == false)
             {
                 var tetrominoToDraw = Move.Tetromino(tetromino);
-                CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
-
-                for (int y = 0; y < canvasHeight; y++)
+                if (tetrominoToDraw.Count != 0)
                 {
-                    for (int x = 0; x < canvasWidth; x++)
-                    {
-                        SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
-                        SetTetrominoColor(canvas, x, y);
+                    CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
 
-                        if (canvas[x, y] != "  ")
-                            Console.Write("  ");
+                    for (int y = 0; y < canvasHeight; y++)
+                    {
+                        for (int x = 0; x < canvasWidth; x++)
+                        {
+                            SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
+                            SetTetrominoColor(canvas, x, y);
+
+                            if (canvas[x, y] != aspectRatio)
+                                Console.Write(aspectRatio);
+                        }
+                        Console.WriteLine();
                     }
-                    Console.WriteLine();
+                    Console.SetCursorPosition(0, 0);
                 }
-                Console.SetCursorPosition(0, 0);
             }
+            Move.movementFinished = false;
         }
 
         private static void CommitTetrominoToCanvas(string[,] canvas, List<Tuple<int, int>> tetrominoToScrape, List<Tuple<string, int, int>> tetrominoToDraw)

@@ -91,14 +91,12 @@ namespace Tetris
             bag.Add(5, iTetrominok);
 
             //    { " ", "T", " " }
-            //    { " ", "T", " " }
             //    { "T", "T", "T" }
 
             tTetromino.Add(new Tuple<string, int, int>("T", 0, 1));
+            tTetromino.Add(new Tuple<string, int, int>("T", 1, 0));
             tTetromino.Add(new Tuple<string, int, int>("T", 1, 1));
-            tTetromino.Add(new Tuple<string, int, int>("T", 2, 1));
-            tTetromino.Add(new Tuple<string, int, int>("T", 2, 2));
-            tTetromino.Add(new Tuple<string, int, int>("T", 2, 3));
+            tTetromino.Add(new Tuple<string, int, int>("T", 1, 2));
             bag.Add(6, tTetromino);
 
             //    { "O", "O", "O" }

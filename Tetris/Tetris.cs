@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Tetris
 {
@@ -12,13 +13,14 @@ namespace Tetris
 
             int interfaceWidth = 60;
             double windowRatio = 1.5;
-            int aspectRatio = 2;
+            string aspectRatio = "  ";
             int[] windowSizeXY = Window.setWindow(windowRatio, interfaceWidth);
             
             while (true)
             {
                 List<Tuple<string, int, int>> tetromino = Generate.NewTetromino();
                 Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino);
+                Thread.Sleep(150);
             }
 
             Console.ReadLine();
