@@ -14,14 +14,11 @@ namespace Tetris
             double windowRatio = 1.5;
             int aspectRatio = 2;
             int[] windowSizeXY = Window.setWindow(windowRatio, interfaceWidth);
-
-            int FPS = 60;
-
+            
             while (true)
             {
                 string[,] tetromino = Generate.NewTetromino();
-                Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino, FPS);
-                
+                Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino);
             }
 
             Console.ReadLine();

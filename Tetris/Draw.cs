@@ -7,37 +7,42 @@ namespace Tetris
 {
     class Draw
     {
+        static string[,] canvas = new string[0, 0];
 
-        public static void Game(int windowWidth, int windowHeight, int aspectRatio, string[,] tetromino, int FPS)
+        public static void Game(int windowWidth, int windowHeight, int aspectRatio, string[,] tetromino)
         {
-            string[,] canvas = new string[windowWidth, windowHeight];
-            List<Tuple<int, int>> tetrominoToScrape = new List<Tuple<int, int>>();
+            if (canvas.GetLength(0) == 0)
+                canvas = new string[windowWidth, windowHeight];
+
+            Move.FinishedCallNewTetromino("New Tetromino");
+            Move.GravityOn(true);
+            List<Tuple<int, int>> tetrominoScrapeTrail = new List<Tuple<int, int>>();
 
             int leftEdge = 0;
             int topEdge = 0;
             int rightEdge = windowWidth - 1;
             int bottomEdge = windowHeight - 1;
-            int moveX = 0;
+            int canvasWidth = canvas.GetLength(0);
+            int canvasHeight = canvas.GetLength(1);
 
-
-            while (true)
+            while (Move.FinishedCallNewTetromino("") == false)
             {
-                var tetrominoToDraw = Move.Tetromino(tetromino, leftEdge, rightEdge);
-                CommitTetrominoToCanvas(canvas, tetrominoToScrape, tetrominoToDraw);
+                var tetrominoToDraw = Move.Tetromino(tetromino);
+                CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
 
-                for (int y = 0; y < canvas.GetLength(1); y++)
+                for (int y = 0; y < canvasHeight; y++)
                 {
-                    for (int x = 0; x < canvas.GetLength(0); x++)
+                    for (int x = 0; x < canvasWidth; x++)
                     {
                         SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
                         SetTetrominoColor(canvas, x, y);
 
-                        Console.Write(new string(' ', aspectRatio));
+                        if (canvas[x, y] != "L")
+                            Console.Write(new string(' ', aspectRatio));
                     }
                     Console.WriteLine();
                 }
                 Console.SetCursorPosition(0, 0);
-                Thread.Sleep(960 / FPS);
             }
         }
 
