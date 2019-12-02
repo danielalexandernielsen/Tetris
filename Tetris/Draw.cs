@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading;
 
 namespace Tetris
 {
@@ -24,7 +24,7 @@ namespace Tetris
             int canvasWidth = canvas.GetLength(0);
             int canvasHeight = canvas.GetLength(1);
 
-            while (Move.movementFinished == false)
+            while (Move.stopMovementOnTetromino == false)
             {
                 var tetrominoToDraw = Move.Tetromino(tetromino);
                 if (tetrominoToDraw.Count != 0)
@@ -43,10 +43,10 @@ namespace Tetris
                         }
                         Console.WriteLine();
                     }
-                    Console.SetCursorPosition(0, 0);
                 }
+                    Console.SetCursorPosition(0, 0);
             }
-            Move.movementFinished = false;
+            Move.stopMovementOnTetromino = false;
         }
 
         private static void CommitTetrominoToCanvas(string[,] canvas, List<Tuple<int, int>> tetrominoToScrape, List<Tuple<string, int, int>> tetrominoToDraw)
@@ -90,15 +90,15 @@ namespace Tetris
             switch (canvas[x, y])
             {
                 case "L":
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.BackgroundColor = ConsoleColor.DarkYellow;
                     break;
 
                 case "J":
-                    Console.BackgroundColor = ConsoleColor.Blue;
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
                     break;
 
                 case "Z":
-                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
                     break;
 
                 case "S":
@@ -106,7 +106,7 @@ namespace Tetris
                     break;
 
                 case "T":
-                    Console.BackgroundColor = ConsoleColor.Magenta;
+                    Console.BackgroundColor = ConsoleColor.DarkMagenta;
                     break;
 
                 case "O":

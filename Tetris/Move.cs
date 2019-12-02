@@ -11,8 +11,9 @@ namespace Tetris
     {
 
         static List<Tuple<string, int, int>> tetrominoMovement = new List<Tuple<string, int, int>>();
-        public static bool movementFinished = false;
+        public static bool stopMovementOnTetromino = false;
         static int moveX = 0;
+        static int moveY = 0;
 
         public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino)
         {
@@ -23,7 +24,7 @@ namespace Tetris
             int leftEdge = 2;
             int rightEdge = 22;
             int bottomEdge = 40;
-            
+
             GravityOn(true);
             tetrominoMovement.Clear();
 
@@ -31,13 +32,13 @@ namespace Tetris
             {
                 var tetrominoType = block.Item1;
                 var tetrominoX = block.Item2 + startXPosition + moveX;
-                var tetrominoY = block.Item3 + startYPosition + gravity;
+                var tetrominoY = block.Item3 + startYPosition + gravity + moveY;
 
                 if (tetrominoY > bottomEdge)
-                {                    
+                {
                     GravityOn(false);
                     ResetMovement(true);
-                    movementFinished = true;
+                    stopMovementOnTetromino = true;
                     tetrominoMovement.Clear();
                     break;
                 }
@@ -73,6 +74,16 @@ namespace Tetris
                 {
                     moveX += 1;
                 }
+
+                if (keyboard.Key == ConsoleKey.DownArrow)
+                {
+                    moveY += 1;
+                }
+
+                if (keyboard.Key == ConsoleKey.UpArrow)
+                {
+                    Move.Tetromino(Generate.Rotation());
+                }
             }
         }
 
@@ -84,8 +95,14 @@ namespace Tetris
         {
             if (state == true)
             {
+                speed = 1;
                 step += 1;
-                speed = 2;
+
+                if (speed == 1 && step == 1)
+                    gravity -= 2;
+
+                if (speed == 2 && step == 1)
+                    gravity -= 1;
 
                 if (step % speed == 0)
                     gravity += 1;
@@ -98,13 +115,13 @@ namespace Tetris
             }
         }
 
-
         public static void ResetMovement(bool state)
         {
             if (state == true)
             {
                 moveX = 0;
-            }   
+                moveY = 0;
+            }
         }
     }
 }
