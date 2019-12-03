@@ -11,11 +11,11 @@ namespace Tetris
             Console.Title = "Tetris";
             Console.CursorVisible = false;
 
-            int interfaceWidth = 60;
-            double windowRatio = 1.5;
+            int interfaceWidth = 40;
+            double windowRatio = 1;
             string aspectRatio = new string(' ', 2);
             int[] windowSizeXY = Window.setWindow(windowRatio, interfaceWidth);
-            
+
             while (true)
             {
                 List<Tuple<string, int, int>> tetromino = Generate.NewTetromino();

@@ -17,13 +17,13 @@ namespace Tetris
 
         public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino)
         {
-            int startXPosition = 12;
+            int startXPosition = 6;
             int startYPosition = 1;
             bool freezeRightMovement = false;
             bool freezeLeftMovement = false;
             int leftEdge = 2;
-            int rightEdge = 22;
-            int bottomEdge = 40;
+            int rightEdge = 11;
+            int bottomEdge = 20;
 
             GravityOn(true);
             tetrominoMovement.Clear();
@@ -82,7 +82,7 @@ namespace Tetris
 
                 if (keyboard.Key == ConsoleKey.UpArrow)
                 {
-                    Move.Tetromino(Generate.Rotation());
+                    Draw.tetromino = (Generate.Rotation());
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace Tetris
         {
             if (state == true)
             {
-                speed = 1;
+                speed = 10;
                 step += 1;
 
                 if (speed == 1 && step == 1)

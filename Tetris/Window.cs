@@ -8,11 +8,11 @@ namespace Tetris
     {
         public static int[] setWindow(double windowRatio, int interfaceWidth)
         {
-            int realTetrisWidth = 34;
-            int realTetrisHeight = 28;
+            int realTetrisWidth = 28;
+            int realTetrisHeight = 22;
 
-            int canvasWidth = Convert.ToInt16(realTetrisWidth * windowRatio) / 2;
-            int canvasHeight = Convert.ToInt16(realTetrisHeight * windowRatio);
+            int canvasWidth = realTetrisWidth / 2;
+            int canvasHeight = realTetrisHeight;
 
             int windowWidth = canvasWidth + interfaceWidth;
             int windowHeight = canvasHeight;

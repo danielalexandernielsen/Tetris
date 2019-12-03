@@ -7,6 +7,7 @@ namespace Tetris
     class Draw
     {
         static string[,] canvas = new string[0, 0];
+        public static List<Tuple<string, int, int>> tetromino = new List<Tuple<string, int, int>>();
 
         public static void Game(int windowWidth, int windowHeight, string aspectRatio, List<Tuple<string, int, int>> tetromino)
         {
@@ -15,6 +16,7 @@ namespace Tetris
 
             Move.ResetMovement(true);
             Move.GravityOn(true);
+            Draw.tetromino = tetromino;
             List<Tuple<int, int>> tetrominoScrapeTrail = new List<Tuple<int, int>>();
 
             int leftEdge = 0;
@@ -26,7 +28,7 @@ namespace Tetris
 
             while (Move.stopMovementOnTetromino == false)
             {
-                var tetrominoToDraw = Move.Tetromino(tetromino);
+                var tetrominoToDraw = Move.Tetromino(Draw.tetromino);
                 if (tetrominoToDraw.Count != 0)
                 {
                     CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
@@ -40,11 +42,13 @@ namespace Tetris
 
                             if (canvas[x, y] != aspectRatio)
                                 Console.Write(aspectRatio);
+
                         }
                         Console.WriteLine();
                     }
-                }
                     Console.SetCursorPosition(0, 0);
+                }
+
             }
             Move.stopMovementOnTetromino = false;
         }
@@ -90,19 +94,19 @@ namespace Tetris
             switch (canvas[x, y])
             {
                 case "L":
-                    Console.BackgroundColor = ConsoleColor.DarkYellow;
-                    break;
-
-                case "J":
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     break;
 
+                case "J":
+                    Console.BackgroundColor = ConsoleColor.DarkYellow;
+                    break;
+
                 case "Z":
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.BackgroundColor = ConsoleColor.Green;
                     break;
 
                 case "S":
-                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
                     break;
 
                 case "T":
