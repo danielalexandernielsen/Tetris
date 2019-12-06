@@ -1,40 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Timers;
 
 namespace Tetris
 {
     class Move
     {
-
         static List<Tuple<string, int, int>> tetrominoMovement = new List<Tuple<string, int, int>>();
         public static bool stopMovementOnTetromino = false;
         static int moveX = 0;
         static int moveY = 0;
+        static int tetrominoIDvalue = 1000;
+        static string tetrominoID;
 
-        public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino)
+        public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
         {
             int startXPosition = 6;
             int startYPosition = 1;
             bool freezeRightMovement = false;
             bool freezeLeftMovement = false;
+            bool freezeAllMovement = false;
             int leftEdge = 2;
             int rightEdge = 11;
             int bottomEdge = 20;
 
             GravityOn(true);
             tetrominoMovement.Clear();
+            tetrominoID = Convert.ToString(tetrominoIDvalue);
+            tetrominoIDvalue++;
 
             foreach (var block in tetromino)
             {
-                var tetrominoType = block.Item1;
+                var tetrominoType = block.Item1 + tetrominoID;
                 var tetrominoX = block.Item2 + startXPosition + moveX;
                 var tetrominoY = block.Item3 + startYPosition + gravity + moveY;
 
-                if (tetrominoY > bottomEdge)
+                freezeAllMovement = Collision.OnMovement(tetrominoX, tetrominoY, canvas, tetrominoID);
+
+                if ((tetrominoY > bottomEdge) || freezeAllMovement == true)
                 {
                     GravityOn(false);
                     ResetMovement(true);
@@ -82,7 +84,7 @@ namespace Tetris
 
                 if (keyboard.Key == ConsoleKey.UpArrow)
                 {
-                    Draw.tetromino = (Generate.Rotation());
+                    Draw.tetromino = (Generate.Rotate());
                 }
             }
         }
@@ -97,12 +99,6 @@ namespace Tetris
             {
                 speed = 10;
                 step += 1;
-
-                if (speed == 1 && step == 1)
-                    gravity -= 2;
-
-                if (speed == 2 && step == 1)
-                    gravity -= 1;
 
                 if (step % speed == 0)
                     gravity += 1;

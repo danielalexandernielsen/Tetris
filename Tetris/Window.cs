@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Tetris
 {
@@ -15,7 +13,7 @@ namespace Tetris
             int canvasHeight = realTetrisHeight;
 
             int windowWidth = canvasWidth + interfaceWidth;
-            int windowHeight = canvasHeight;
+            int windowHeight = canvasHeight + 1;
 
             Console.SetWindowSize(windowWidth, windowHeight);
             int[] windowSizeXY = { canvasWidth, canvasHeight };

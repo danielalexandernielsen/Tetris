@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Tetris
 {
@@ -73,11 +72,12 @@ namespace Tetris
 
             List<Tuple<string, int, int>> newTetromino = tetrominoBag[tetromino];
             tetrominoBag.Remove(tetromino);
+            rotation = 1;
 
             return newTetromino;
         }
 
-        public static List<Tuple<string, int, int>> Rotation()
+        public static List<Tuple<string, int, int>> Rotate()
         {
             if (rotation < 4)
                 rotation++;

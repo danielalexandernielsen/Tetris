@@ -28,7 +28,7 @@ namespace Tetris
 
             while (Move.stopMovementOnTetromino == false)
             {
-                var tetrominoToDraw = Move.Tetromino(Draw.tetromino);
+                var tetrominoToDraw = Move.Tetromino(Draw.tetromino, canvas);
                 if (tetrominoToDraw.Count != 0)
                 {
                     CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
@@ -91,7 +91,12 @@ namespace Tetris
 
         private static void SetTetrominoColor(string[,] canvas, int x, int y)
         {
-            switch (canvas[x, y])
+            string tetrominoType = canvas[x, y];
+
+            if (tetrominoType != null)
+                tetrominoType = Convert.ToString(tetrominoType[0]);
+
+            switch (tetrominoType)
             {
                 case "L":
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
