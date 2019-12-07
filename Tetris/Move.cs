@@ -9,7 +9,8 @@ namespace Tetris
         public static bool stopMovementOnTetromino = false;
         static int moveX = 0;
         static int moveY = 0;
-        static int tetrominoIDvalue = 1000;
+        static int rememberLastXmove = 0;
+        static int tetrominoIDvalue = 1000000;
         static string tetrominoID;
 
         public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
@@ -27,14 +28,15 @@ namespace Tetris
             tetrominoMovement.Clear();
             tetrominoID = Convert.ToString(tetrominoIDvalue);
             tetrominoIDvalue++;
-
+            
             foreach (var block in tetromino)
             {
-                var tetrominoType = block.Item1 + tetrominoID;
-                var tetrominoX = block.Item2 + startXPosition + moveX;
-                var tetrominoY = block.Item3 + startYPosition + gravity + moveY;
+                string tetrominoType = block.Item1 + tetrominoID;
+                int tetrominoX = block.Item2 + startXPosition + moveX;
+                int tetrominoY = block.Item3 + startYPosition + gravity + moveY;
+                int saveY = startYPosition + gravity + moveY;
 
-                freezeAllMovement = Collision.OnMovement(tetrominoX, tetrominoY, canvas, tetrominoID);
+                freezeAllMovement = Collision.Downwards(tetrominoX, tetrominoY, canvas, tetrominoID, rememberLastXmove, tetromino, saveY);
 
                 if ((tetrominoY > bottomEdge) || freezeAllMovement == true)
                 {
@@ -70,11 +72,13 @@ namespace Tetris
                 if (keyboard.Key == ConsoleKey.LeftArrow && freezeLeftMovement == false)
                 {
                     moveX -= 1;
+                    rememberLastXmove = 1;
                 }
 
                 if (keyboard.Key == ConsoleKey.RightArrow && freezeRightMovement == false)
                 {
                     moveX += 1;
+                    rememberLastXmove = -1;
                 }
 
                 if (keyboard.Key == ConsoleKey.DownArrow)
