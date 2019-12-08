@@ -40,8 +40,8 @@ namespace Tetris
                             SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
                             SetTetrominoColor(canvas, x, y);
 
-                            if (canvas[x, y] != aspectRatio)
-                                Console.Write(aspectRatio);
+                            Console.Write(aspectRatio);
+                            // Console.Write($"{x}{y}");
 
                         }
                         Console.WriteLine();
@@ -128,4 +128,4 @@ namespace Tetris
             }
         }
     }
-}   
+}

@@ -6,7 +6,9 @@ namespace Tetris
 {
     class Collision
     {
-        public static bool Downwards(int x, int y, string[,] canvas, string tetrominoID, int reverseLastXmove, List<Tuple<string, int, int>> tetromino, int saveY)
+        public enum Collided { no, yes, sideways };
+
+        public static Collided Downwards(int x, int y, string[,] canvas, string tetrominoID, int previousMoveX)
         {
 
             string tetrominoOnCanvasID = canvas[x, y];
@@ -27,21 +29,21 @@ namespace Tetris
 
             if (canvas[x, y] != null && tetrominoID != tetrominoOnCanvasID)
             {
-                //int isRowBelowEmpty = 0;
+                if (previousMoveX == 0)
+                {
+                    return Collided.yes;
+                }
 
-                //foreach (var block in tetromino)
-                //{
-                //    int checkYbelow = block.Item3 + saveY + 1;
-                //    if (canvas[x + reverseLastXmove, checkYbelow] != null && tetrominoID != tetrominoOnCanvasID)
-                //    {
-                //        isRowBelowEmpty++;
-                //    }
-                //}
+                else
+                {
+                    if (canvas[x + previousMoveX, y] != null && previousMoveX != 0)
+                    {
+                        return Collided.sideways;
+                    }
+                }
+            }
 
-                //if (isRowBelowEmpty == 0)
-                    return true;  
-            }      
-            return false;
+            return Collided.no;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Tetris
             int interfaceWidth = 40;
             double windowRatio = 1;
             string aspectRatio = new string(' ', 2);
-            int[] windowSizeXY = Window.setWindow(windowRatio, interfaceWidth);
+            int[] windowSizeXY = Window.SetWindow(windowRatio, interfaceWidth);
 
             while (true)
             {

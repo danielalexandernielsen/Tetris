@@ -5,45 +5,58 @@ namespace Tetris
 {
     class Move
     {
-        static List<Tuple<string, int, int>> tetrominoMovement = new List<Tuple<string, int, int>>();
+        static List<Tuple<string, int, int>> movement = new List<Tuple<string, int, int>>();
         public static bool stopMovementOnTetromino = false;
         static int moveX = 0;
         static int moveY = 0;
-        static int rememberLastXmove = 0;
+        static int previousMoveX = 0;
         static int tetrominoIDvalue = 1000000;
         static string tetrominoID;
+        public static bool freezeRightMovement = false;
+        public static bool freezeLeftMovement = false;
 
         public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
         {
             int startXPosition = 6;
             int startYPosition = 1;
-            bool freezeRightMovement = false;
-            bool freezeLeftMovement = false;
+            freezeRightMovement = false;
+            freezeLeftMovement = false;
             bool freezeAllMovement = false;
             int leftEdge = 2;
             int rightEdge = 11;
             int bottomEdge = 20;
 
             GravityOn(true);
-            tetrominoMovement.Clear();
+            movement.Clear();
             tetrominoID = Convert.ToString(tetrominoIDvalue);
             tetrominoIDvalue++;
-            
+
+            foreach (var block in tetromino)
+            {
+                int tetrominoX = block.Item2 + startXPosition + moveX;
+                int tetrominoY = block.Item3 + startYPosition + gravity + moveY;
+
+                var collisionResult = Collision.Downwards(tetrominoX, tetrominoY, canvas, tetrominoID, previousMoveX);
+
+                if (collisionResult == Collision.Collided.yes)
+                    freezeAllMovement = true;
+
+                else if (collisionResult == Collision.Collided.sideways)
+                    moveX += previousMoveX;
+            }
+
             foreach (var block in tetromino)
             {
                 string tetrominoType = block.Item1 + tetrominoID;
                 int tetrominoX = block.Item2 + startXPosition + moveX;
                 int tetrominoY = block.Item3 + startYPosition + gravity + moveY;
-                int saveY = startYPosition + gravity + moveY;
-
-                freezeAllMovement = Collision.Downwards(tetrominoX, tetrominoY, canvas, tetrominoID, rememberLastXmove, tetromino, saveY);
 
                 if ((tetrominoY > bottomEdge) || freezeAllMovement == true)
                 {
                     GravityOn(false);
                     ResetMovement(true);
                     stopMovementOnTetromino = true;
-                    tetrominoMovement.Clear();
+                    movement.Clear();
                     break;
                 }
 
@@ -53,7 +66,7 @@ namespace Tetris
                 if (tetrominoX >= rightEdge)
                     freezeRightMovement = true;
 
-                tetrominoMovement.Add(new Tuple<string, int, int>(
+                movement.Add(new Tuple<string, int, int>(
                     tetrominoType,
                     tetrominoX,
                     tetrominoY
@@ -61,7 +74,7 @@ namespace Tetris
             }
 
             Controller(freezeRightMovement, freezeLeftMovement);
-            return tetrominoMovement;
+            return movement;
         }
 
         private static void Controller(bool freezeRightMovement, bool freezeLeftMovement)
@@ -72,25 +85,24 @@ namespace Tetris
                 if (keyboard.Key == ConsoleKey.LeftArrow && freezeLeftMovement == false)
                 {
                     moveX -= 1;
-                    rememberLastXmove = 1;
+                    previousMoveX = 1;
                 }
 
-                if (keyboard.Key == ConsoleKey.RightArrow && freezeRightMovement == false)
+                else if (keyboard.Key == ConsoleKey.RightArrow && freezeRightMovement == false)
                 {
                     moveX += 1;
-                    rememberLastXmove = -1;
+                    previousMoveX = -1;
                 }
 
-                if (keyboard.Key == ConsoleKey.DownArrow)
-                {
+                else if (keyboard.Key == ConsoleKey.DownArrow)
                     moveY += 1;
-                }
 
-                if (keyboard.Key == ConsoleKey.UpArrow)
-                {
+                else if (keyboard.Key == ConsoleKey.UpArrow)
                     Draw.tetromino = (Generate.Rotate());
-                }
             }
+
+            else
+                previousMoveX = 0;
         }
 
         static int gravity = 0;

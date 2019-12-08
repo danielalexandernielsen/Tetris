@@ -4,7 +4,7 @@ namespace Tetris
 {
     class Window
     {
-        public static int[] setWindow(double windowRatio, int interfaceWidth)
+        public static int[] SetWindow(double windowRatio, int interfaceWidth)
         {
             int realTetrisWidth = 28;
             int realTetrisHeight = 22;
