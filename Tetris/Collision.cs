@@ -6,7 +6,7 @@ namespace Tetris
 {
     class Collision
     {
-        public enum Collided { no, yes, sideways };
+        public enum Collided { none, downwards, sideways };
 
         public static Collided Downwards(int x, int y, string[,] canvas, string tetrominoID, int previousMoveX)
         {
@@ -31,7 +31,7 @@ namespace Tetris
             {
                 if (previousMoveX == 0)
                 {
-                    return Collided.yes;
+                    return Collided.downwards;
                 }
 
                 else
@@ -43,7 +43,7 @@ namespace Tetris
                 }
             }
 
-            return Collided.no;
+            return Collided.none;
         }
     }
 }

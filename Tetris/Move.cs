@@ -38,7 +38,7 @@ namespace Tetris
 
                 var collisionResult = Collision.Downwards(tetrominoX, tetrominoY, canvas, tetrominoID, previousMoveX);
 
-                if (collisionResult == Collision.Collided.yes)
+                if (collisionResult == Collision.Collided.downwards)
                     freezeAllMovement = true;
 
                 else if (collisionResult == Collision.Collided.sideways)
