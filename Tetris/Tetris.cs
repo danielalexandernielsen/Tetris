@@ -19,7 +19,9 @@ namespace Tetris
             while (true)
             {
                 List<Tuple<string, int, int>> tetromino = Generate.NewTetromino();
-                Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino);
+                var linesToClear = Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino);
+                Score.ClearLine(linesToClear);
+                Score.SetScore();
                 Thread.Sleep(150);
             }
         }

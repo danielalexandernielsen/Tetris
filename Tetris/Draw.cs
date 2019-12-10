@@ -6,10 +6,11 @@ namespace Tetris
 {
     class Draw
     {
-        static string[,] canvas = new string[0, 0];
+        public static string[,] canvas = new string[0, 0];
         public static List<Tuple<string, int, int>> tetromino = new List<Tuple<string, int, int>>();
+        static List<int> linesToBeScored = new List<int>();
 
-        public static void Game(int windowWidth, int windowHeight, string aspectRatio, List<Tuple<string, int, int>> tetromino)
+        public static List<int> Game(int windowWidth, int windowHeight, string aspectRatio, List<Tuple<string, int, int>> tetromino)
         {
             if (canvas.GetLength(0) == 0)
                 canvas = new string[windowWidth, windowHeight];
@@ -26,11 +27,16 @@ namespace Tetris
             int canvasWidth = canvas.GetLength(0);
             int canvasHeight = canvas.GetLength(1);
 
+            int countBlocksInLine = 0;
+            int countFullLines = 0;
+
             while (Move.stopMovementOnTetromino == false)
             {
                 var tetrominoToDraw = Move.Tetromino(Draw.tetromino, canvas);
+
                 if (tetrominoToDraw.Count != 0)
                 {
+                    linesToBeScored.Clear();
                     CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
 
                     for (int y = 0; y < canvasHeight; y++)
@@ -39,18 +45,25 @@ namespace Tetris
                         {
                             SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
                             SetTetrominoColor(canvas, x, y);
-
                             Console.Write(aspectRatio);
-                            // Console.Write($"{x}{y}");
 
+                            if (canvas[x, y] != null)
+                                countBlocksInLine++;
                         }
                         Console.WriteLine();
+
+                        if (countBlocksInLine == 10)
+                        {
+                            countFullLines++;
+                            linesToBeScored.Add(y);
+                        }
+                        countBlocksInLine = 0;
                     }
                     Console.SetCursorPosition(0, 0);
                 }
-
             }
             Move.stopMovementOnTetromino = false;
+            return linesToBeScored;
         }
 
         private static void CommitTetrominoToCanvas(string[,] canvas, List<Tuple<int, int>> tetrominoToScrape, List<Tuple<string, int, int>> tetrominoToDraw)
