@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Tetris
 {
@@ -8,12 +7,17 @@ namespace Tetris
     {
         public static string[,] canvas = new string[0, 0];
         public static List<Tuple<string, int, int>> tetromino = new List<Tuple<string, int, int>>();
+        static bool isCanvasEmpty = true;
         static List<int> linesToBeScored = new List<int>();
 
         public static List<int> Game(int windowWidth, int windowHeight, string aspectRatio, List<Tuple<string, int, int>> tetromino)
         {
-            if (canvas.GetLength(0) == 0)
+
+            if (isCanvasEmpty == true)
+            {
                 canvas = new string[windowWidth, windowHeight];
+                isCanvasEmpty = false;
+            }
 
             Move.ResetMovement(true);
             Move.GravityOn(true);

@@ -5,18 +5,42 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Shantris.wav" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Windows.Extensions" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Shantris.wav">
+    <Reference Include="Microsoft.DirectX.AudioVideoPlayback">
+      <HintPath>..\..\..\..\Windows\assembly\GAC\Microsoft.DirectX.AudioVideoPlayback\1.0.2902.0__31bf3856ad364e35\Microsoft.DirectX.AudioVideoPlayback.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Sound\Start.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </None>
+    <None Update="Sound\ShantrisTheme.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sound\Contact.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sound\GoodJob.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sound\FallingDown.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sound\GameOver.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sound\YouWon.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

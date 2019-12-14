@@ -1,42 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Tetris
 {
     class Score
     {
 
-        public static bool ClearLine(List<int> linesToClear)
+        public static bool ClearLine(int windowWidth, int windowHeight, List<int> linesToClear)
         {
             if (linesToClear.Count == 0)
                 return false;
 
             int canvasWidth = Draw.canvas.GetLength(0);
-            int moveDownAboveThisLine = linesToClear.Max();
+            int canvasHeight = Draw.canvas.GetLength(1);
+            int borderWidth = 2;
+            string[,] canvasTemp = new string[windowWidth, windowHeight];
 
             foreach (var line in linesToClear)
             {
-                for (int x = 0; x < canvasWidth; x++)
-                    Draw.canvas[x, line] = null;
-            }
-
-
-
-            for (int y = 0; y < moveDownAboveThisLine; y++)
-            {
-                for (int x = 0; x < canvasWidth; x++)
+                for (int x = borderWidth; x < canvasWidth - borderWidth; x++)
                 {
-                    if (y == 0)
-                        Draw.canvas[x, y] = null;
-
-                    else
-                        Draw.canvas[x, y] = Draw.canvas[x, y - 1];
+                    Draw.canvas[x, line] = null;
                 }
+
+
+                //for (int i = canvasHeight - 1; i > 0; i++)
+                //{
+                //    for (int j = 0; j < canvasWidth; j++)
+                //    {
+                //        Draw.canvas[i, j] = Draw.canvas[i - 1, j];
+                //    }
+                //}
+
             }
-
-
             return true;
         }
 

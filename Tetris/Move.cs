@@ -15,7 +15,8 @@ namespace Tetris
         public static bool freezeRightMovement = false;
         public static bool freezeLeftMovement = false;
 
-        public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
+
+public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
         {
             int startXPosition = 6;
             int startYPosition = 1;
@@ -53,6 +54,7 @@ namespace Tetris
 
                 if ((tetrominoY > bottomEdge) || freezeAllMovement == true)
                 {
+                    Audio.Effect(Audio.Wav.contact);
                     GravityOn(false);
                     ResetMovement(true);
                     stopMovementOnTetromino = true;
