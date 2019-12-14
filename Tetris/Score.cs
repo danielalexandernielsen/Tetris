@@ -13,7 +13,9 @@ namespace Tetris
             int canvasWidth = Draw.canvas.GetLength(0);
             int canvasHeight = Draw.canvas.GetLength(1);
             int borderWidth = 2;
-            string[,] canvasTemp = new string[windowWidth, windowHeight];
+            int borderHeight = 2;
+
+            Audio.Effect(Audio.Wav.goodJob);
 
             foreach (var line in linesToClear)
             {
@@ -22,16 +24,15 @@ namespace Tetris
                     Draw.canvas[x, line] = null;
                 }
 
-
-                //for (int i = canvasHeight - 1; i > 0; i++)
-                //{
-                //    for (int j = 0; j < canvasWidth; j++)
-                //    {
-                //        Draw.canvas[i, j] = Draw.canvas[i - 1, j];
-                //    }
-                //}
-
+                for (int y = line; y > borderHeight; y--)
+                {
+                    for (int x = borderWidth; x < canvasWidth - borderWidth; x++)
+                    {
+                        Draw.canvas[x, y] = Draw.canvas[x, y - 1];
+                    }
+                }
             }
+
             return true;
         }
 

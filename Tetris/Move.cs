@@ -14,6 +14,7 @@ namespace Tetris
         static string tetrominoID;
         public static bool freezeRightMovement = false;
         public static bool freezeLeftMovement = false;
+        public static bool freezeDownMovement = false;
 
 
 public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
@@ -22,6 +23,7 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
             int startYPosition = 1;
             freezeRightMovement = false;
             freezeLeftMovement = false;
+            freezeDownMovement = false;
             bool freezeAllMovement = false;
             int leftEdge = 2;
             int rightEdge = 11;
@@ -68,6 +70,9 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
                 if (tetrominoX >= rightEdge)
                     freezeRightMovement = true;
 
+                if (tetrominoY == bottomEdge)
+                    freezeDownMovement = true;
+
                 movement.Add(new Tuple<string, int, int>(
                     tetrominoType,
                     tetrominoX,
@@ -96,7 +101,7 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
                     previousMoveX = -1;
                 }
 
-                else if (keyboard.Key == ConsoleKey.DownArrow)
+                else if (keyboard.Key == ConsoleKey.DownArrow && freezeDownMovement == false)
                     moveY += 1;
 
                 else if (keyboard.Key == ConsoleKey.UpArrow)
