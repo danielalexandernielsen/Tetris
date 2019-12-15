@@ -15,21 +15,24 @@ namespace Tetris
         public static bool freezeRightMovement = false;
         public static bool freezeLeftMovement = false;
         public static bool freezeDownMovement = false;
+        public static bool freezeRotation = false;
 
 
-public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
+        public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, int>> tetromino, string[,] canvas)
         {
             int startXPosition = 6;
             int startYPosition = 1;
             freezeRightMovement = false;
             freezeLeftMovement = false;
             freezeDownMovement = false;
+            freezeRotation = false;
             bool freezeAllMovement = false;
+            int blocksCloseToEdge = 0;
             int leftEdge = 2;
             int rightEdge = 11;
             int bottomEdge = 20;
 
-            GravityOn(true);
+            Gravity(true);
             movement.Clear();
             tetrominoID = Convert.ToString(tetrominoIDvalue);
             tetrominoIDvalue++;
@@ -57,7 +60,7 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
                 if ((tetrominoY > bottomEdge) || freezeAllMovement == true)
                 {
                     Audio.Effect(Audio.Wav.contact);
-                    GravityOn(false);
+                    Gravity(false);
                     ResetMovement(true);
                     stopMovementOnTetromino = true;
                     movement.Clear();
@@ -73,18 +76,32 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
                 if (tetrominoY == bottomEdge)
                     freezeDownMovement = true;
 
+                if (tetrominoX <= leftEdge || tetrominoX >= rightEdge)
+                {
+                    blocksCloseToEdge++;
+
+                    if (blocksCloseToEdge >= 3)
+                        freezeRotation = true;
+
+                    if (blocksCloseToEdge >= 2 && (tetrominoType[0] == 'Z' || tetrominoType[0] == 'S'))
+                        freezeRotation = true;
+                }
+
+                if ((tetrominoX >= rightEdge -1) && tetrominoType[0] == 'I')
+                    freezeRotation = true;
+
                 movement.Add(new Tuple<string, int, int>(
-                    tetrominoType,
-                    tetrominoX,
-                    tetrominoY
-                    ));
+                tetrominoType,
+                tetrominoX,
+                tetrominoY
+                ));
             }
 
-            Controller(freezeRightMovement, freezeLeftMovement);
+            Controller();
             return movement;
         }
 
-        private static void Controller(bool freezeRightMovement, bool freezeLeftMovement)
+        private static void Controller()
         {
             if (Console.KeyAvailable == true)
             {
@@ -104,7 +121,7 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
                 else if (keyboard.Key == ConsoleKey.DownArrow && freezeDownMovement == false)
                     moveY += 1;
 
-                else if (keyboard.Key == ConsoleKey.UpArrow)
+                else if (keyboard.Key == ConsoleKey.UpArrow && freezeRotation == false)
                     Draw.tetromino = (Generate.Rotate());
             }
 
@@ -112,11 +129,12 @@ public static List<Tuple<string, int, int>> Tetromino(List<Tuple<string, int, in
                 previousMoveX = 0;
         }
 
+
         static int gravity = 0;
         static int step = 0;
         static int speed = 0;
 
-        public static void GravityOn(bool state)
+        public static void Gravity(bool state)
         {
             if (state == true)
             {

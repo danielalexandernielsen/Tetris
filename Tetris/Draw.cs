@@ -20,7 +20,7 @@ namespace Tetris
             }
 
             Move.ResetMovement(true);
-            Move.GravityOn(true);
+            Move.Gravity(true);
             Draw.tetromino = tetromino;
             List<Tuple<int, int>> tetrominoScrapeTrail = new List<Tuple<int, int>>();
 

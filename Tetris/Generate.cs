@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tetris
 {
@@ -48,17 +49,23 @@ namespace Tetris
         static readonly List<Tuple<string, int, int>> oTetromino = new List<Tuple<string, int, int>>();
 
 
-        static readonly Random random = new Random();
         static List<Tuple<string, int, int>> newTetrominoRotation = new List<Tuple<string, int, int>>();
+        static readonly Random random = new Random();
         static int tetromino;
         static int rotation = 1;
-        static int fillRotationBagOnce = 1;
+        static bool firstRun = true;
 
         public static List<Tuple<string, int, int>> NewTetromino()
         {
+            if (firstRun == true)
+            {
+                LoadTetrominos();
+                LoadRotations();
+                firstRun = false;
+            }
 
             if (tetrominoBag.Count == 0)
-                FillBags();
+                FillTetrominoBag();
 
             tetromino = 0;
             while (true)
@@ -70,7 +77,7 @@ namespace Tetris
                     break;
             }
 
-            List<Tuple<string, int, int>> newTetromino = tetrominoBag[tetromino];
+            var newTetromino = tetrominoBag[tetromino];
             tetrominoBag.Remove(tetromino);
             rotation = 1;
 
@@ -117,10 +124,19 @@ namespace Tetris
         }
 
 
-        private static void FillBags()
+        private static void FillTetrominoBag()
         {
-            if (fillRotationBagOnce == 1)
-            {
+            tetrominoBag.Add(1, lTetrominoUp);
+            tetrominoBag.Add(2, jTetrominoUp);
+            tetrominoBag.Add(3, zTetrominoUp);
+            tetrominoBag.Add(4, sTetrominoUp);
+            tetrominoBag.Add(5, iTetrominoUp);
+            tetrominoBag.Add(6, tTetrominoUp);
+            tetrominoBag.Add(7, oTetromino);
+        }
+
+        private static void LoadRotations()
+        {
                 lRotationBag.Add(1, lTetrominoUp);
                 lRotationBag.Add(2, lTetrominoRight);
                 lRotationBag.Add(3, lTetrominoDown);
@@ -133,18 +149,18 @@ namespace Tetris
 
                 zRotationBag.Add(1, zTetrominoUp);
                 zRotationBag.Add(2, zTetrominoRight);
-                zRotationBag.Add(3, zTetrominoDown);
-                zRotationBag.Add(4, zTetrominoLeft);
+                zRotationBag.Add(3, zTetrominoUp);
+                zRotationBag.Add(4, zTetrominoRight);
 
                 sRotationBag.Add(1, sTetrominoUp);
                 sRotationBag.Add(2, sTetrominoRight);
-                sRotationBag.Add(3, sTetrominoDown);
-                sRotationBag.Add(4, sTetrominoLeft);
+                sRotationBag.Add(3, sTetrominoUp);
+                sRotationBag.Add(4, sTetrominoRight);
 
                 iRotationBag.Add(1, iTetrominoUp);
                 iRotationBag.Add(2, iTetrominoRight);
-                iRotationBag.Add(3, iTetrominoDown);
-                iRotationBag.Add(4, iTetrominoLeft);
+                iRotationBag.Add(3, iTetrominoUp);
+                iRotationBag.Add(4, iTetrominoRight);
 
                 tRotationBag.Add(1, tTetrominoUp);
                 tRotationBag.Add(2, tTetrominoRight);
@@ -155,10 +171,11 @@ namespace Tetris
                 oRotationBag.Add(2, oTetromino);
                 oRotationBag.Add(3, oTetromino);
                 oRotationBag.Add(4, oTetromino);
+        }
 
-                fillRotationBagOnce++;
-            }
 
+        private static void LoadTetrominos()
+        {
 
             //    { " ", " ", "L" }
             //    { "L", "L", "L" }
@@ -166,8 +183,7 @@ namespace Tetris
             lTetrominoUp.Add(new Tuple<string, int, int>("L", 0, 2));
             lTetrominoUp.Add(new Tuple<string, int, int>("L", 1, 0));
             lTetrominoUp.Add(new Tuple<string, int, int>("L", 1, 1));
-            lTetrominoUp.Add(new Tuple<string, int, int>("L", 1, 2));
-            tetrominoBag.Add(1, lTetrominoUp);
+            lTetrominoUp.Add(new Tuple<string, int, int>("L", 1, 2));            
 
             //    { " ", "L", " " }
             //    { " ", "L", " " }
@@ -203,9 +219,7 @@ namespace Tetris
             jTetrominoUp.Add(new Tuple<string, int, int>("J", 0, 0));
             jTetrominoUp.Add(new Tuple<string, int, int>("J", 1, 0));
             jTetrominoUp.Add(new Tuple<string, int, int>("J", 1, 1));
-            jTetrominoUp.Add(new Tuple<string, int, int>("J", 1, 2));
-
-            tetrominoBag.Add(2, jTetrominoUp);
+            jTetrominoUp.Add(new Tuple<string, int, int>("J", 1, 2));            
 
             //    { " ", "J", "J" }
             //    { " ", "J", " " }
@@ -243,7 +257,6 @@ namespace Tetris
             zTetrominoUp.Add(new Tuple<string, int, int>("Z", 0, 1));
             zTetrominoUp.Add(new Tuple<string, int, int>("Z", 1, 1));
             zTetrominoUp.Add(new Tuple<string, int, int>("Z", 1, 2));
-            tetrominoBag.Add(3, zTetrominoUp);
 
             //    { " ", " ", "Z" }
             //    { " ", "Z", "Z" }
@@ -280,7 +293,6 @@ namespace Tetris
             sTetrominoUp.Add(new Tuple<string, int, int>("S", 0, 2));
             sTetrominoUp.Add(new Tuple<string, int, int>("S", 1, 0));
             sTetrominoUp.Add(new Tuple<string, int, int>("S", 1, 1));
-            tetrominoBag.Add(4, sTetrominoUp);
 
             //    { " ", "S", " " }
             //    { " ", "S", "S" }
@@ -318,7 +330,6 @@ namespace Tetris
             iTetrominoUp.Add(new Tuple<string, int, int>("I", 1, 1));
             iTetrominoUp.Add(new Tuple<string, int, int>("I", 1, 2));
             iTetrominoUp.Add(new Tuple<string, int, int>("I", 1, 3));
-            tetrominoBag.Add(5, iTetrominoUp);
 
             //    { " ", " ", "I", " " }
             //    { " ", " ", "I", " " }
@@ -358,7 +369,6 @@ namespace Tetris
             tTetrominoUp.Add(new Tuple<string, int, int>("T", 1, 0));
             tTetrominoUp.Add(new Tuple<string, int, int>("T", 1, 1));
             tTetrominoUp.Add(new Tuple<string, int, int>("T", 1, 2));
-            tetrominoBag.Add(6, tTetrominoUp);
 
             //    { " ", "T", " " }
             //    { " ", "T", "T" }
@@ -394,7 +404,6 @@ namespace Tetris
             oTetromino.Add(new Tuple<string, int, int>("O", 0, 1));
             oTetromino.Add(new Tuple<string, int, int>("O", 1, 0));
             oTetromino.Add(new Tuple<string, int, int>("O", 1, 1));
-            tetrominoBag.Add(7, oTetromino);
         }
     }
 }
