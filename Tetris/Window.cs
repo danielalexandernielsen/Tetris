@@ -13,7 +13,7 @@ namespace Tetris
             int canvasHeight = realTetrisHeight;
 
             int windowWidth = canvasWidth + interfaceWidth;
-            int windowHeight = canvasHeight + 1;
+            int windowHeight = canvasHeight + 2;
 
             Console.SetWindowSize(windowWidth, windowHeight);
             int[] windowSizeXY = { canvasWidth, canvasHeight };

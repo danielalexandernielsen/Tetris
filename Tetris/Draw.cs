@@ -43,18 +43,22 @@ namespace Tetris
                     linesToBeScored.Clear();
                     CommitTetrominoToCanvas(canvas, tetrominoScrapeTrail, tetrominoToDraw);
 
+                    Console.WriteLine();
+
                     for (int y = 0; y < canvasHeight; y++)
                     {
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write("                       ");
+
                         for (int x = 0; x < canvasWidth; x++)
                         {
                             SetBorder(leftEdge, topEdge, rightEdge, bottomEdge, x, y);
                             SetTetrominoColor(canvas, x, y);
-                            Console.Write(aspectRatio);
+                            Console.Write("  ");
 
                             if (canvas[x, y] != null)
                                 countBlocksInLine++;
                         }
-                        Console.WriteLine();
 
                         if (countBlocksInLine == 10)
                         {
@@ -62,7 +66,19 @@ namespace Tetris
                             linesToBeScored.Add(y);
                         }
                         countBlocksInLine = 0;
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write("   ");
+
+                        if (y == 1)
+                            Console.Write("SCORE:");
+                        if (y == 2)
+                            Console.Write(Score.playerScore);
+
+                        Console.WriteLine();
                     }
+
+
                     Console.SetCursorPosition(0, 0);
                 }
             }

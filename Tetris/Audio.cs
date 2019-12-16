@@ -20,7 +20,7 @@ namespace Tetris
                 case Wav.fallingDown:
                     mciSendString(@"open Sound/FallingDown.wav type waveaudio alias fallingdown", null, 0, IntPtr.Zero);
                     mciSendString(@"play fallingdown", null, 0, IntPtr.Zero);
-                    Thread.Sleep(250);
+                    Thread.Sleep(311);
                     mciSendString(@"stop fallingdown", null, 0, IntPtr.Zero);
                     mciSendString(@"close fallingdown", null, 0, IntPtr.Zero);
                     break;
@@ -28,7 +28,7 @@ namespace Tetris
                 case Wav.goodJob:
                     mciSendString(@"open Sound/GoodJob.wav type waveaudio alias goodjob", null, 0, IntPtr.Zero);
                     mciSendString(@"play goodjob", null, 0, IntPtr.Zero);
-                    Thread.Sleep(400);
+                    Thread.Sleep(310);
                     mciSendString(@"stop goodjob", null, 0, IntPtr.Zero);
                     mciSendString(@"close goodjob", null, 0, IntPtr.Zero);
                     break;

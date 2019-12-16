@@ -9,23 +9,22 @@ namespace Tetris
     {
         static void Main(string[] args)
         {
-            Console.Title = "Tetris";
-            Console.CursorVisible = false;
 
-            Audio.Music(Audio.Wav.theme);
 
-            int interfaceWidthRHS = 40;
+            int interfaceWidth = 62;
             double windowRatio = 1;
             string aspectRatio = new string(' ', 2);
-            int[] windowSizeXY = Window.SetWindow(windowRatio, interfaceWidthRHS);
+            int[] windowSizeXY = Window.SetWindow(windowRatio, interfaceWidth);
+            TitleScreen.Show();
+            Audio.Music(Audio.Wav.theme);
 
 
             while (true)
             {
                 List<Tuple<string, int, int>> tetromino = Generate.NewTetromino();
                 var linesToClear = Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino);
-                var playerClearedLines = Score.ClearLine(windowSizeXY[0], windowSizeXY[1], linesToClear);
-                // Score.SetScore();
+                Score.ClearLine(windowSizeXY[0], windowSizeXY[1], linesToClear);
+
             }
         }
     }

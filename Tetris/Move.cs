@@ -60,6 +60,7 @@ namespace Tetris
                 if ((tetrominoY > bottomEdge) || freezeAllMovement == true)
                 {
                     Audio.Effect(Audio.Wav.contact);
+                    Score.SetScore(Score.Points.tetrominoPlaced);
                     Gravity(false);
                     ResetMovement(true);
                     stopMovementOnTetromino = true;
@@ -87,7 +88,8 @@ namespace Tetris
                         freezeRotation = true;
                 }
 
-                if ((tetrominoX >= rightEdge -1) && tetrominoType[0] == 'I')
+
+                if ((tetrominoX >= rightEdge - 1) && tetrominoType[0] == 'I')
                     freezeRotation = true;
 
                 movement.Add(new Tuple<string, int, int>(
