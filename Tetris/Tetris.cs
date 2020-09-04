@@ -24,7 +24,6 @@ namespace Tetris
                 List<Tuple<string, int, int>> tetromino = Generate.NewTetromino();
                 var linesToClear = Draw.Game(windowSizeXY[0], windowSizeXY[1], aspectRatio, tetromino);
                 Score.ClearLine(windowSizeXY[0], windowSizeXY[1], linesToClear);
-
             }
         }
     }

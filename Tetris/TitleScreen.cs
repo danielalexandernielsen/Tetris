@@ -35,13 +35,15 @@ namespace Tetris
             Console.WriteLine();
             Console.WriteLine();
 
-
-            var keyboard = Console.ReadKey(true);
-
-            if (keyboard.Key == ConsoleKey.Spacebar)
+            while (true)
             {
-                Console.Clear();
-                return;
+                var keyboard = Console.ReadKey(true);
+
+                if (keyboard.Key == ConsoleKey.Spacebar)
+                {
+                    Console.Clear();
+                    break;
+                }
             }
         }
     }
